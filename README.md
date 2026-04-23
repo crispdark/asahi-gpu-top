@@ -9,11 +9,12 @@ Asahi Linux by reading DRM scheduler trace events from the kernel
 (`drm_sched_job_run` / `drm_sched_job_done`).
 
 It shows:
-- **GPU busy %** — percentage of time the GPU had at least one job
+
+* **GPU busy %** — percentage of time the GPU had at least one job
   running (equivalent to AMD's `gpu_busy_percent`)
-- **jobs/s** — GPU job throughput per second
-- **System power** and **fan speed** (whole-system metrics, not GPU-only)
-- **Active GPU clients** — which processes currently have an open
+* **jobs/s** — GPU job throughput per second
+* **System power** and **fan speed** (whole-system metrics, not GPU-only)
+* **Active GPU clients** — which processes currently have an open
   connection to the GPU
 
 ## Why this exists
@@ -29,28 +30,37 @@ Temperature and clock frequency are also not exposed by the current
 
 ## Requirements
 
-- Asahi Linux (tested on Fedora Asahi Remix, Apple M1 Pro)
-- Python 3
-- `rich` library: `sudo pip install rich --break-system-packages`
-- Root access (required to read tracefs)
+* Asahi Linux (tested on Fedora Asahi Remix, Apple M1 Pro)
+* Python 3.9+
+* Kernel with `CONFIG_DRM_SCHED` tracepoints enabled (standard on any
+  recent Asahi kernel) and tracefs mounted at `/sys/kernel/debug/tracing`
+* `rich` library:
+  * On Fedora Asahi Remix: `sudo dnf install python3-rich`
+  * Otherwise: `pipx install rich` (avoid
+    `pip install --break-system-packages`, which violates PEP 668)
+* Root access (required to read tracefs)
+
+The tool auto-detects the `macsmc` hwmon device and the `asahi` DRM
+card, so it should work regardless of enumeration order across boots.
 
 ## Usage
 
-```bash
+```
 git clone https://github.com/crispdark/asahi-gpu-top
 cd asahi-gpu-top
 sudo python3 asahi-gpu-top.py
 ```
 
 **Keybindings:**
-- `S` — toggle system processes (KDE/Wayland) in the client list
-- `Q` — quit
+
+* `S` — toggle system processes (KDE/Wayland) in the client list
+* `Q` — quit
 
 ## Limitations
 
-- GPU busy % measures *how often* the GPU is working, not *how hard*
-- System power and fan are whole-system metrics (CPU + GPU + display)
-- GPU temperature and clock frequency are not available on Asahi Linux
+* GPU busy % measures *how often* the GPU is working, not *how hard*
+* System power and fan are whole-system metrics (CPU + GPU + display)
+* GPU temperature and clock frequency are not available on Asahi Linux
   at this time
 
 ## Contributing
