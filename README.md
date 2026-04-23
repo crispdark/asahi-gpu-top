@@ -37,6 +37,8 @@ Temperature and clock frequency are also not exposed by the current
 ## Usage
 
 ```bash
+git clone https://github.com/crispdark/asahi-gpu-top
+cd asahi-gpu-top
 sudo python3 asahi-gpu-top.py
 ```
 
